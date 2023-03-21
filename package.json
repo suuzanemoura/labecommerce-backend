@@ -1,0 +1,35 @@
+{
+  "name": "labecommerce-backend",
+  "version": "1.0.0",
+  "description": "Projeto 'Labecommerce' consiste na criação de uma API para um E-commerce vinculada a um banco de dados real.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "par-ou-impar": "node par-ou-impar.js",
+    "pedra-papel-tesoura": "node pedra-papel-tesoura.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suuzanemoura/labecommerce-backend.git"
+  },
+  "keywords": [
+    "labecommerce",
+    "backend",
+    "api",
+    "api-rest",
+    "api-restful",
+    "nodejs",
+    "typescript",
+    "express",
+    "sql",
+    "knex",
+    "postman"
+  ],
+  "author": "Suzane Moura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/suuzanemoura/labecommerce-backend/issues"
+  },
+  "homepage": "https://github.com/suuzanemoura/labecommerce-backend#readme"
+}
