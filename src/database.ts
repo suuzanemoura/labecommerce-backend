@@ -23,7 +23,7 @@ export const products: TProduct[] = [
     },
     {
         id: "p0002",
-        name: "Bolo de morango",
+        name: "Bolo de Morango",
         price: 12,
         category: CATEGORIES.CAKES
     },
