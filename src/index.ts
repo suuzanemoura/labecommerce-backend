@@ -32,6 +32,25 @@ app.get('/products/search', (req: Request, res: Response) => {
     res.status(200).send(result)
 })
 
+app.get('/purchases', (req: Request, res: Response) => {
+    res.status(200).send(purchases)
+})
+
+app.get('/products/:id', (req: Request, res: Response) => {
+    const id = req.params.id
+    const result = products.find((product) => product.id === id)
+    res.status(200).send(result)
+})
+
+app.get('/users/:id/purchases', (req: Request, res: Response) => {
+    const id = req.params.id
+    const result = purchases.filter(
+        (purchase) => {
+            return purchase.userId.includes(id)
+        })
+    res.status(200).send(result)
+})
+
 app.post('/users', (req: Request, res: Response) => {
     const id = req.body.id as string
     const email = req.body.email as string
@@ -64,10 +83,6 @@ app.post('/products', (req: Request, res: Response) => {
     res.status(201).send("Produto cadastrado com sucesso!")
 })
 
-app.get('/purchases', (req: Request, res: Response) => {
-    res.status(200).send(purchases)
-})
-
 app.post('/purchases', (req: Request, res: Response) => {
     const userId = req.body.userId as string
     const productId = req.body.productId as string
@@ -83,4 +98,68 @@ app.post('/purchases', (req: Request, res: Response) => {
 
     purchases.push(newPurchase)
     res.status(201).send("Compra realizada com sucesso!")
+})
+
+app.delete('/users/:id', (req: Request, res: Response) => {
+
+    const id = req.params.id
+
+    const userIndex = users.findIndex((user) => user.id === id)
+
+    if (userIndex >= 0) {
+        users.splice(userIndex, 1)
+    }
+
+    res.status(200).send("User deletado com sucesso!")
+})
+
+app.delete('/products/:id', (req: Request, res: Response) => {
+
+    const id = req.params.id
+
+    const productIndex = products.findIndex((product) => product.id === id)
+
+    if (productIndex >= 0) {
+        products.splice(productIndex, 1)
+    }
+
+    res.status(200).send("Produto deletado com sucesso!")
+})
+
+app.put('/users/:id', (req: Request, res: Response) => {
+
+      const id = req.params.id
+      const { email, password } = req.body
+  
+      const newEmail = email as string | undefined
+      const newPassword = password as string | undefined
+  
+      const user = users.find((user) => user.id === id)
+  
+      if (user) {
+        user.email = newEmail || user.email
+        user.password = newPassword || user.password
+      }
+  
+      res.status(200).send('Atualização realizada com sucesso')
+  })
+
+  app.put('/products/:id', (req: Request, res: Response) => {
+
+    const id = req.params.id
+    const { name, price, category } = req.body
+
+    const newName = name as string | undefined
+    const newPrice = price as number | undefined
+    const newCategory = category as CATEGORIES | undefined
+
+    const product = products.find((product) => product.id === id)
+
+    if (product) {
+      product.name = newName || product.name
+      product.price = newPrice || product.price
+      product.category = newCategory || product.category
+    }
+
+    res.status(200).send('Atualização realizada com sucesso')
 })
