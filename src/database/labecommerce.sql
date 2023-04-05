@@ -153,3 +153,66 @@ SELECT *
 FROM products
 WHERE price >= 10 AND price <= 20
 ORDER BY price ASC;
+
+------------------------------------------------------------
+
+-- Criação da tabela de pedidos
+
+CREATE TABLE
+    purchases (
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        total_price REAL NOT NULL,
+        paid INTEGER NOT NULL DEFAULT 0,
+        delivered_at INTEGER,
+        buyer_id TEXT NOT NULL,
+        FOREIGN KEY (buyer_id) REFERENCES users(id)
+    );
+
+SELECT * FROM purchases;
+
+DROP TABLE purchases;
+
+-- a) Crie dois pedidos para cada usuário cadastrado
+
+INSERT INTO
+    purchases (
+        id,
+        total_price,
+        delivered_at,
+        buyer_id
+    )
+VALUES ("#00001", 24, NULL, "u001"), ("#00002", 10, NULL, "u001"), ("#00003", 18, NULL, "u002"), ("#00004", 24, NULL, "u002");
+
+UPDATE purchases
+SET
+    delivered_at = DATETIME('now')
+WHERE id = "#00001";
+
+UPDATE purchases SET paid = 1 WHERE id = "#00001";
+
+UPDATE purchases
+SET
+    delivered_at = DATETIME('now', "+3 day")
+WHERE id = "#00002";
+
+UPDATE purchases
+SET
+    delivered_at = DATETIME('now', "+5 day")
+WHERE id = "#00003";
+
+UPDATE purchases
+SET
+    delivered_at = DATETIME('now', "+10 day")
+WHERE id = "#00004";
+
+-- Crie a query de consulta utilizando junção para simular um endpoint de histórico de compras de um determinado usuário. Mocke um valor para a id do comprador, ela deve ser uma das que foram utilizadas no exercício 2.
+
+SELECT
+    purchases.id,
+    purchases.total_price,
+    purchases.paid,
+    purchases.delivered_at,
+    users.id,
+    users.email
+FROM purchases
+    INNER JOIN users ON users.id = purchases.buyer_id AND purchases.buyer_id = "u002";
