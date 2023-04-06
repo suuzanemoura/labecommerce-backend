@@ -216,3 +216,35 @@ SELECT
     users.email
 FROM purchases
     INNER JOIN users ON users.id = purchases.buyer_id AND purchases.buyer_id = "u002";
+
+CREATE TABLE
+    purchases_products (
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity INTEGER NOT NULL
+    );
+
+INSERT INTO
+    purchases_products (
+        purchase_id,
+        product_id,
+        quantity
+    )
+VALUES ("#00001", "p005", 2), ("#00002", "p003", 1), ("#00003", "p003", 1), ("#00003", "p001", 1), ("#00004", "p001", 1), ("#00004", "p006", 2);
+
+SELECT * FROM purchases_products;
+
+SELECT
+    purchases.id,
+    purchases.buyer_id,
+    purchases_products.product_id,
+    purchases_products.quantity,
+    products.name,
+    products.category,
+    products.price,
+    purchases.total_price,
+    purchases.paid,
+    purchases.delivered_at
+FROM purchases_products
+    INNER JOIN purchases ON purchases.id = purchases_products.purchase_id
+    INNER JOIN products ON products.id = purchases_products.product_id;
