@@ -1,13 +1,15 @@
-import { CATEGORIES, TProduct, TPurchase, TUser } from "./types";
+import { TProduct, TPurchase, TUser } from "./types";
 
 export const users: TUser[] = [
     {
         id: "u001",
+        name: "Suzane",
         email: "suuzane@gmail.com",
         password: "Su@123456"
     },
     {
         id: "u002",
+        name: "Bryan",
         email: "bryan@gmail.com",
         password: "Bryan@123456"
     }
@@ -16,36 +18,38 @@ export const users: TUser[] = [
 
 export const products: TProduct[] = [
     {
-        id: "p0001",
+        id: "p001",
         name: "Bolo de Chocolate",
         price: 10,
-        category: CATEGORIES.CAKES
+        description: "Fatia de bolo de chocolate com recheio e cobertura de brigadeiro, finalizado com raspas de chocolate.",
+        image_url: "https://cuidai.com.br/alimentacao/busca-de-alimentos/Content/img/alimentos/164876-bolo-de-chocolate-com-recheio-e-calda-de-chocolate.jpg"
     },
     {
         id: "p0002",
         name: "Bolo de Morango",
         price: 12,
-        category: CATEGORIES.CAKES
+        description: "Bolo branco, morangos frescos, creme de baunilha, chantilly e geleia de morango caseira.",
+        image_url: "https://salvadornorteonline.com.br/salvadornorteonline/2021/04/Torta-Delicia-de-Morango-scaled.jpg"
     },
 ]
 
-export const purchases: TPurchase[] = [
-    {
-        userId: users[0].id,
-        productId: products[0].id,
-        quantity: 2,
-        totalPrice: products[0].price * 2
-    },
-    {
-        userId: users[1].id,
-        productId: products[1].id,
-        quantity: 1,
-        totalPrice: products[1].price * 1
-    },
-]
+// export const purchases: TPurchase[] = [
+//     {
+//         userId: users[0].id,
+//         productId: products[0].id,
+//         quantity: 2,
+//         totalPrice: products[0].price * 2
+//     },
+//     {
+//         userId: users[1].id,
+//         productId: products[1].id,
+//         quantity: 1,
+//         totalPrice: products[1].price * 1
+//     },
+// ]
 
 
-export const createUser = (id:string, email:string, password: string):void => {
+export const createUser = (id:string, name: string, email:string, password: string):void => {
 
     const user = users.find(
         (user) => {
@@ -56,6 +60,7 @@ export const createUser = (id:string, email:string, password: string):void => {
     if (!user) {
         const newUser:TUser = {
             id: id,
+            name: name,
             email: email,
             password: password
         }
@@ -73,7 +78,7 @@ export const getAllUsers = ():void => {
     console.log("Todos os users:", allUsers)
 }
 
-export const createProduct = (id:string, name:string, price: number, category:CATEGORIES):void => {
+export const createProduct = (id:string, name:string, price: number, description: string, image_url: string):void => {
     
     const product = products.find(
         (product) => {
@@ -86,7 +91,8 @@ export const createProduct = (id:string, name:string, price: number, category:CA
             id: id,
             name: name,
             price: price,
-            category: category
+            description: description,
+            image_url: image_url
         }
         console.log("Produto criado com sucesso!")
         products.push(newProduct)
@@ -124,35 +130,35 @@ export const queryProductsByName = (query:string):void => {
     
 }
 
-export const createPurchase = (userId:string, productId:string, quantity:number, totalPrice:number):void => {
-            if(userId.length > 0){
-                const newPurchase:TPurchase = {
-                    userId: userId,
-                    productId: productId,
-                    quantity: quantity,
-                    totalPrice: totalPrice
-                }
+// export const createPurchase = (userId:string, productId:string, quantity:number, totalPrice:number):void => {
+//             if(userId.length > 0){
+//                 const newPurchase:TPurchase = {
+//                     userId: userId,
+//                     productId: productId,
+//                     quantity: quantity,
+//                     totalPrice: totalPrice
+//                 }
 
-                console.log("Compra realizada com sucesso!")
-                purchases.push(newPurchase)
-            } else {
-                console.log("Informações não encontradas no servidor. Verifique sua compra e tente novamente.")
-            }
-}
+//                 console.log("Compra realizada com sucesso!")
+//                 purchases.push(newPurchase)
+//             } else {
+//                 console.log("Informações não encontradas no servidor. Verifique sua compra e tente novamente.")
+//             }
+// }
 
-export const getAllPurchasesFromUserId = (userIdToSearch: string):void => {
+// export const getAllPurchasesFromUserId = (userIdToSearch: string):void => {
 
-    const userId = users.find((user) =>  user.id === userIdToSearch)
+//     const userId = users.find((user) =>  user.id === userIdToSearch)
 
-    if(userId){
-        const allPurchases = purchases.filter(
-            (purchase) => {
-                return purchase.userId === userIdToSearch
-            }
-        )
+//     if(userId){
+//         const allPurchases = purchases.filter(
+//             (purchase) => {
+//                 return purchase.userId === userIdToSearch
+//             }
+//         )
 
-        allPurchases.length > 0 ? console.log("Todas as compras:", allPurchases) : console.log("Nenhuma compra foi realizada")
-    } else {
-        console.log("ID não encontrado. Digite outro e tente novamente.")
-    }
-}
+//         allPurchases.length > 0 ? console.log("Todas as compras:", allPurchases) : console.log("Nenhuma compra foi realizada")
+//     } else {
+//         console.log("ID não encontrado. Digite outro e tente novamente.")
+//     }
+// }

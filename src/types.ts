@@ -1,5 +1,6 @@
 export type TUser = {
     id: string,
+    name: string,
     email: string,
     password: string
   }
@@ -8,18 +9,12 @@ export type TProduct = {
     id: string,
     name: string,
     price: number,
-    category: CATEGORIES
+    description: string,
+    image_url: string
 }
 
 export type TPurchase = {
-    userId: string,
-    productId: string,
-    quantity: number,
-    totalPrice: number
-}
-
-export enum CATEGORIES {
-    CAKES = "Bolos",
-    SALTY_PASTRIES = "Salgados",
-    DESSERTS = "Doces"
+    id: string,
+    buyer: string,
+    total_price: number
 }
