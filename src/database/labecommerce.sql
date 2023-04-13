@@ -3,22 +3,27 @@
 CREATE TABLE
     users (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        created_at TEXT DEFAULT (DATETIME('now', 'localtime')) NOT NULL
     );
 
 INSERT INTO
-    users (id, email, password)
+    users (id, name, email, password)
 VALUES (
         "u001",
+        "Suzane",
         "suzane@email.com",
         "Su@123456"
     ), (
         "u002",
+        "Bryan",
         "bryan@email.com",
         "Bryan@123456"
     ), (
         "u003",
+        "Fulano",
         "fulano@email.com",
         "Fulano@1234"
     );
@@ -28,126 +33,120 @@ CREATE TABLE
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
         name TEXT NOT NULL,
         price REAL NOT NULL,
-        category TEXT NOT NULL
+        description TEXT NOT NULL,
+        image_url TEXT NOT NULL
     );
 
 INSERT INTO
-    products (id, name, price, category)
+    products (
+        id,
+        name,
+        price,
+        description,
+        image_url
+    )
 VALUES (
         "p001",
         "Bolo de Chocolate",
-        8,
-        "Bolos"
+        12,
+        "Fatia de bolo de chocolate com recheio e cobertura de brigadeiro, finalizado com raspas de chocolate.",
+        "https://cuidai.com.br/alimentacao/busca-de-alimentos/Content/img/alimentos/164876-bolo-de-chocolate-com-recheio-e-calda-de-chocolate.jpg"
     ), (
         "p002",
         "Bolo de Morango",
-        9,
-        "Bolos"
+        15,
+        "Bolo branco, morangos frescos, creme de baunilha, chantilly e geleia de morango caseira.",
+        "https://salvadornorteonline.com.br/salvadornorteonline/2021/04/Torta-Delicia-de-Morango-scaled.jpg"
     ), (
         "p003",
         "Mousse de Maracujá",
         10,
-        "Doces"
+        "Mousse de maracujá no pote de 250ml.",
+        "https://img.cybercook.com.br/receitas/764/mousse-de-maracuja-para-100-pessoas-2.jpeg"
     ), (
         "p004",
         "Coxinha de Frango sem Catupiry",
         12,
-        "Salgados"
+        "Coxinha grande recheada com bastante frango.",
+        "https://receitasimplesefacil.com.br/wp-content/uploads/2022/02/Coxinha-de-Frango-1024x756.jpg"
     ), (
         "p005",
         "Coxinha de Frango com Catupiry",
         12,
-        "Salgados"
+        "Coxinha grande recheada com bastante frango com catupiry.",
+        "https://i2.wp.com/www.flamboesa.com.br/wp-content/uploads/2017/06/coxinha9386.jpg?fit=1280%2C849&ssl=1"
     );
 
 -- Get All Users
-
--- retorna todos os usuários cadastrados
 
 SELECT * FROM users;
 
 -- Get All Products
 
--- retorna todos os produtos cadastrados
-
 SELECT * FROM products;
 
 -- Search Product by name
-
--- retorna o resultado baseado no termo de busca
 
 SELECT * FROM products WHERE name LIKE "%Bolo%";
 
 -- Create User
 
--- crie um novo usuário // insere o item mockado na tabela users
-
 INSERT INTO
-    users (id, email, password)
+    users (id, name, email, password)
 VALUES (
         "u004",
+        "Beltrano",
         "beltrano@email.com",
         "Beltrano@123"
     );
 
 -- Create Product
 
--- crie um novo produto // insere o item mockado na tabela products
-
 INSERT INTO
-    products (id, name, price, category)
+    products (
+        id,
+        name,
+        price,
+        description,
+        image_url
+    )
 VALUES (
         "p006",
         "Brownie tradicional",
         7,
-        "Doces"
+        "Brownie de Chocolate tradicional, sem recheio.",
+        "https://img.itdg.com.br/images/recipes/000/306/823/340593/340593_original.jpg"
     );
 
 -- Get Products by id
-
--- busca de produtos por id
 
 SELECT * FROM products WHERE id = "p006";
 
 -- Delete User by id
 
--- deleção de user por id
-
-DELETE FROM users WHERE id = "u004";
+DELETE FROM users WHERE id = "u005";
 
 -- Delete Product by id
 
--- deleção de produto por id
-
-DELETE FROM products WHERE id = "p006";
+DELETE FROM products WHERE id = "p005";
 
 -- Edit User by id
-
---edição de user por id
 
 UPDATE users SET password = "bananinha123" WHERE id = "u004";
 
 -- Edit Product by id
 
--- edição de produto por id
-
 UPDATE products SET price = 8 WHERE id = "p006";
 
 -- Get All Users
-
--- retorna o resultado ordenado pela coluna email em ordem crescente
 
 SELECT * FROM users ORDER BY email ASC;
 
 --Get All Products versão 1
 
--- retorna o resultado ordenado pela coluna price em ordem crescente // limite o resultado em 20 iniciando pelo primeiro item
-
 SELECT * FROM products ORDER BY price ASC LIMIT 20 OFFSET 0;
 
 -- Get All Products versão 2
-
--- seleção de um intervalo de preços, por exemplo entre 100.00 e 300.00 // retorna os produtos com preços dentro do intervalo definido em ordem crescente
 
 SELECT *
 FROM products
@@ -156,66 +155,56 @@ ORDER BY price ASC;
 
 ------------------------------------------------------------
 
--- Criação da tabela de pedidos
-
 CREATE TABLE
     purchases (
         id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        buyer TEXT NOT NULL,
         total_price REAL NOT NULL,
+        created_at TEXT DEFAULT (DATETIME()) NOT NULL,
         paid INTEGER NOT NULL DEFAULT 0,
-        delivered_at INTEGER,
-        buyer_id TEXT NOT NULL,
-        FOREIGN KEY (buyer_id) REFERENCES users(id)
+        FOREIGN KEY (buyer) REFERENCES users(id)
     );
 
 SELECT * FROM purchases;
 
 DROP TABLE purchases;
 
--- a) Crie dois pedidos para cada usuário cadastrado
-
 INSERT INTO
-    purchases (
-        id,
-        total_price,
-        delivered_at,
-        buyer_id
-    )
-VALUES ("#00001", 24, NULL, "u001"), ("#00002", 10, NULL, "u001"), ("#00003", 18, NULL, "u002"), ("#00004", 24, NULL, "u002");
+    purchases (id, buyer, total_price)
+VALUES ("#00001", "u001", 24), ("#00002", "u001", 10), ("#00003", "u002", 18), ("#00004", "u002", 24);
 
 UPDATE purchases
 SET
-    delivered_at = DATETIME('now')
+    created_at = DATETIME('now')
 WHERE id = "#00001";
 
 UPDATE purchases SET paid = 1 WHERE id = "#00001";
 
 UPDATE purchases
 SET
-    delivered_at = DATETIME('now', "+3 day")
+    created_at = DATETIME('now', "+3 day")
 WHERE id = "#00002";
 
 UPDATE purchases
 SET
-    delivered_at = DATETIME('now', "+5 day")
+    created_at = DATETIME('now', "+5 day")
 WHERE id = "#00003";
 
 UPDATE purchases
 SET
-    delivered_at = DATETIME('now', "+10 day")
+    created_at = DATETIME('now', "+10 day")
 WHERE id = "#00004";
-
--- Crie a query de consulta utilizando junção para simular um endpoint de histórico de compras de um determinado usuário. Mocke um valor para a id do comprador, ela deve ser uma das que foram utilizadas no exercício 2.
 
 SELECT
     purchases.id,
+    purchases.buyer,
+    users.name,
+    users.email,
     purchases.total_price,
-    purchases.paid,
-    purchases.delivered_at,
-    users.id,
-    users.email
+    purchases.created_at,
+    purchases.paid
 FROM purchases
-    INNER JOIN users ON users.id = purchases.buyer_id AND purchases.buyer_id = "u002";
+    INNER JOIN users ON users.id = purchases.buyer AND purchases.buyer = "u002";
 
 CREATE TABLE
     purchases_products (
@@ -236,15 +225,15 @@ SELECT * FROM purchases_products;
 
 SELECT
     purchases.id,
-    purchases.buyer_id,
+    purchases.buyer,
     purchases_products.product_id,
     purchases_products.quantity,
     products.name,
-    products.category,
     products.price,
+    products.description,
     purchases.total_price,
     purchases.paid,
-    purchases.delivered_at
+    purchases.created_at
 FROM purchases_products
     INNER JOIN purchases ON purchases.id = purchases_products.purchase_id
     INNER JOIN products ON products.id = purchases_products.product_id;
