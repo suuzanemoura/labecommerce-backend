@@ -5,7 +5,7 @@ import { TUser } from "../types";
 export const getAllUsers = async (req: Request, res: Response) => {
 
     try {
-        const users:TUser[] = await db("users").select("id", "name", "email", "created_at as createdAt")
+        const users:TUser[] = await db("users").select("id", "name", "email", "password", "created_at as createdAt")
 
         if (!users){
             res.status(404)
@@ -19,7 +19,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
         res.status(200).send(users); 
 
     } catch (error: any){
-
         if(res.statusCode === 200){
             res.status(500)
         }

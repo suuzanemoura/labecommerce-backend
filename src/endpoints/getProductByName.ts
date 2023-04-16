@@ -5,7 +5,7 @@ import { TProduct } from "../types";
 export const getProductByName = async (req: Request, res: Response) => {
 
     try {
-        const query = req.query.q as string
+        const query = req.query.query as string
 
         if (query.length < 1) {
             res.status(400)
