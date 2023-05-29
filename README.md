@@ -70,6 +70,10 @@ $ npm run dev
     - Delete purchase by id
       - Exclusão de um pedido realizado.
 
+### Status do projeto
+
+- Concluído ⏳
+
 ## Contato
 
 E-mail: suuzanemoura@gmail.com
